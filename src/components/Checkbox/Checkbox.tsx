@@ -56,3 +56,107 @@ const InfoIcon = ({ disabled }: { disabled?: boolean }) => (
 export const Checkbox: React.FC<CheckboxProps> = ({
   checked = false,
   indeterminate = false,
+  size = 'M',
+  disabled = false,
+  label,
+  showInfoIcon = false,
+  onChange,
+  className,
+}) => {
+  const [hovered, setHovered] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const cfg = SIZES[size];
+
+  // Derive box styles from state + view — tokens from Figma
+  const getBoxStyle = (): React.CSSProperties => {
+    const base: React.CSSProperties = {
+      width: cfg.box,
+      height: cfg.box,
+      borderRadius: cfg.radius,
+      flexShrink: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'all 0.12s',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      boxSizing: 'border-box',
+    };
+
+    if (disabled) {
+      return checked || indeterminate
+        ? { ...base, background: colors.g300 }
+        : { ...base, background: colors.g100, border: `1.5px solid ${colors.g200}` };
+    }
+
+    if (checked || indeterminate) {
+      return {
+        ...base,
+        background: colors.primary,
+        boxShadow: focused ? `0 0 0 3px rgba(65,60,195,0.2)` : undefined,
+      };
+    }
+
+    // Unselected
+    if (focused) return { ...base, border: `1.5px solid ${colors.g300}`, background: colors.white, boxShadow: '0 0 0 3px rgba(65,60,195,0.2)' };
+    if (hovered) return { ...base, border: `1.5px solid ${colors.g300}`, background: colors.white };
+    return { ...base, border: `1.5px solid ${colors.g200}`, background: colors.white };
+  };
+
+  const getLabelColor = (): string => {
+    if (disabled) return colors.g400;
+    if (hovered || focused) return colors.black;
+    return colors.g600;
+  };
+
+  const handleClick = () => {
+    if (disabled) return;
+    onChange?.(!checked);
+  };
+
+  return (
+    <div
+      className={className}
+      style={{ display: 'flex', alignItems: 'center', gap: spacing[8], cursor: disabled ? 'not-allowed' : 'pointer' }}
+      onClick={handleClick}
+      onMouseEnter={() => !disabled && setHovered(true)}
+      onMouseLeave={() => !disabled && setHovered(false)}
+    >
+      {/* Hidden native checkbox for accessibility */}
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={e => onChange?.(e.target.checked)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+        aria-label={label}
+      />
+
+      {/* Visual box */}
+      <div style={getBoxStyle()}>
+        {indeterminate && !disabled && <Dash />}
+        {indeterminate && disabled && <Dash />}
+        {checked && !indeterminate && <Checkmark size={cfg.box} />}
+      </div>
+
+      {/* Label */}
+      {label && (
+        <span style={{
+          fontFamily: typography.fontBody,
+          fontSize: cfg.fontSize,
+          lineHeight: cfg.lineHeight,
+          color: getLabelColor(),
+          userSelect: 'none',
+        }}>
+          {label}
+        </span>
+      )}
+
+      {/* Info icon */}
+      {showInfoIcon && <InfoIcon disabled={disabled} />}
+    </div>
+  );
+};
+
+export default Checkbox;
