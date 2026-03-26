@@ -10,6 +10,9 @@ export * from './tokens/tokens';
 export { Checkbox } from './components/Checkbox';
 export type { CheckboxProps, CheckboxView, CheckboxSize, CheckboxState } from './components/Checkbox';
 
+// Toggle
+export { Toggle } from './components/Toggle';
+export type { ToggleProps, ToggleSize, ToggleColor, ToggleLabelAlign } from './components/Toggle';
+
 // Coming soon:
-// export { Toggle } from './components/Toggle';
 // export { Input } from './components/Input';
