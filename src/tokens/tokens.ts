@@ -189,22 +189,150 @@ export const radii = {
 // ─── Typography ───────────────────────────────────────────────────────────────
 
 export const typography = {
+  // Fonts
   fontBody:    '"Public Sans", sans-serif',
   fontDisplay: '"Aeonik", sans-serif',
 
-  sizeCaption: '12px',
-  sizeSmall:   '14px',
-  sizeBody:    '16px',
-  sizeHeading: '20px',
-  sizeTitle:   '24px',
-  sizeDisplay: '32px',
+  // Font sizes — matches Figma trumpet 2.0 type scale
+  sizeH1:      '48px',  // Aeonik Semibold, 110% lh
+  sizeH2:      '36px',  // Aeonik Semibold, 120% lh
+  sizeH3:      '24px',  // Aeonik Semibold, 140% lh
+  sizeH4:      '18px',  // Aeonik Semibold, auto lh
+  sizeBody:    '16px',  // Public Sans Regular/Medium/Semi, 140% lh
+  sizeSmall:   '14px',  // Public Sans Regular/Semi, 140% lh
+  sizeCaption: '12px',  // Public Sans Regular/Semi, 125% lh
+  sizeOverline:'12px',  // Public Sans Regular/Semi, 100% lh, 5% spacing, uppercase
 
+  // Legacy aliases — kept for backwards compatibility
+  sizeDisplay: '48px',
+  sizeTitle:   '36px',
+  sizeHeading: '24px',
+
+  // Font weights
   weightRegular:   400,
+  weightMedium:    500,
   weightSemiBold:  600,
   weightBold:      700,
   weightExtraBold: 800,
 
-  lineHeight: 1.4,
+  // Line heights
+  lineHeightTight:   '100%', // overline
+  lineHeightCaption: '125%', // caption, h1
+  lineHeightBody:    '140%', // body, small, h3, h4
+  lineHeightH2:      '120%',
+  lineHeight:        1.4,    // numeric fallback
+
+  // Letter spacing
+  letterSpacingNormal:   '0%',
+  letterSpacingOverline: '5%',
+} as const;
+
+// ─── Text style presets ───────────────────────────────────────────────────────
+// Ready-to-use style objects matching every Figma text style exactly.
+// Use these in React components: <div style={textStyles.h1}>...</div>
+
+export const textStyles = {
+  h1: {
+    fontFamily: '"Aeonik", sans-serif',
+    fontSize: '48px',
+    fontWeight: 600,
+    lineHeight: '110%',
+    letterSpacing: '0',
+  },
+  h2: {
+    fontFamily: '"Aeonik", sans-serif',
+    fontSize: '36px',
+    fontWeight: 600,
+    lineHeight: '120%',
+    letterSpacing: '0',
+  },
+  h3: {
+    fontFamily: '"Aeonik", sans-serif',
+    fontSize: '24px',
+    fontWeight: 600,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  h4: {
+    fontFamily: '"Aeonik", sans-serif',
+    fontSize: '18px',
+    fontWeight: 600,
+    lineHeight: 'auto',
+    letterSpacing: '0',
+  },
+  body: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '16px',
+    fontWeight: 400,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  bodyMedium: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '16px',
+    fontWeight: 500,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  bodySemi: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '16px',
+    fontWeight: 600,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  small: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '14px',
+    fontWeight: 400,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  smallSemi: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '14px',
+    fontWeight: 600,
+    lineHeight: '140%',
+    letterSpacing: '0',
+  },
+  smallSemiUp: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '14px',
+    fontWeight: 600,
+    lineHeight: '140%',
+    letterSpacing: '0',
+    textTransform: 'uppercase' as const,
+  },
+  caption: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '12px',
+    fontWeight: 400,
+    lineHeight: '125%',
+    letterSpacing: '0',
+  },
+  captionSemi: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '12px',
+    fontWeight: 600,
+    lineHeight: '125%',
+    letterSpacing: '0',
+  },
+  overline: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '12px',
+    fontWeight: 400,
+    lineHeight: '100%',
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase' as const,
+  },
+  overlineSemi: {
+    fontFamily: '"Public Sans", sans-serif',
+    fontSize: '12px',
+    fontWeight: 600,
+    lineHeight: '100%',
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase' as const,
+  },
 } as const;
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -212,3 +340,4 @@ export const typography = {
 export type ColorToken   = keyof typeof colors;
 export type SpacingToken = keyof typeof spacing;
 export type RadiiToken   = keyof typeof radii;
+export type TextStyleToken = keyof typeof textStyles;

@@ -35,12 +35,22 @@ const config: Config = {
     },
 
     fontSize: {
-      caption: [typography.sizeCaption, { lineHeight: '1.4' }],
-      sm:      [typography.sizeSmall,   { lineHeight: '1.4' }],
-      base:    [typography.sizeBody,    { lineHeight: '1.5' }],
-      lg:      [typography.sizeHeading, { lineHeight: '1.4' }],
-      xl:      [typography.sizeTitle,   { lineHeight: '1.3' }],
-      display: [typography.sizeDisplay, { lineHeight: '1.2', letterSpacing: '-0.03em' }],
+      // Headings — Aeonik
+      'h1':      [typography.sizeH1,      { lineHeight: '110%', fontWeight: '600' }],
+      'h2':      [typography.sizeH2,      { lineHeight: '120%', fontWeight: '600' }],
+      'h3':      [typography.sizeH3,      { lineHeight: '140%', fontWeight: '600' }],
+      'h4':      [typography.sizeH4,      { lineHeight: '1.4',  fontWeight: '600' }],
+      // Body — Public Sans
+      'base':    [typography.sizeBody,    { lineHeight: '140%' }],
+      'body-md': [typography.sizeBody,    { lineHeight: '140%', fontWeight: '500' }],
+      'body-semi':[typography.sizeBody,   { lineHeight: '140%', fontWeight: '600' }],
+      // Small
+      'sm':      [typography.sizeSmall,   { lineHeight: '140%' }],
+      'sm-semi': [typography.sizeSmall,   { lineHeight: '140%', fontWeight: '600' }],
+      // Caption & Overline
+      'caption': [typography.sizeCaption, { lineHeight: '125%' }],
+      'caption-semi': [typography.sizeCaption, { lineHeight: '125%', fontWeight: '600' }],
+      'overline':[typography.sizeOverline,{ lineHeight: '100%', letterSpacing: '0.05em' }],
     },
 
     fontWeight: {
