@@ -261,3 +261,169 @@ export const Radii: StoryObj = {
   name: 'Border radius',
   render: () => <BorderRadii />,
 };
+
+// ════════════════════════════════════════════════════════════════════════════════
+// COLOUR GUIDELINES
+// ════════════════════════════════════════════════════════════════════════════════
+
+function DoCard({ children, note }: { children: React.ReactNode; note?: string }) {
+  return (
+    <div style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ padding: '8px 14px', background: '#f0fdf4', borderBottom: '1px solid #bbf7d0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#16a34a', fontFamily: typography.fontBody }}>
+        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#16a34a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: '#fff' }}>✓</span>
+        Do
+      </div>
+      <div style={{ padding: 20 }}>{children}</div>
+      {note && <div style={{ padding: '8px 14px', fontSize: 11, color: colors.g500, borderTop: `1px solid ${colors.g150}`, fontFamily: typography.fontBody }}>{note}</div>}
+    </div>
+  );
+}
+
+function DontCard({ children, note }: { children: React.ReactNode; note?: string }) {
+  return (
+    <div style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ padding: '8px 14px', background: '#fff1f2', borderBottom: '1px solid #fecdd3', display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#dc2626', fontFamily: typography.fontBody }}>
+        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#dc2626', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: '#fff' }}>✕</span>
+        {"Don't"}
+      </div>
+      <div style={{ padding: 20 }}>{children}</div>
+      {note && <div style={{ padding: '8px 14px', fontSize: 11, color: colors.g500, borderTop: `1px solid ${colors.g150}`, fontFamily: typography.fontBody }}>{note}</div>}
+    </div>
+  );
+}
+
+function Btn({ label, variant = 'primary' }: { label: string; variant?: 'primary' | 'ghost' | 'warning' | 'extra' }) {
+  const s: Record<string, React.CSSProperties> = {
+    primary: { background: colors.primary, color: '#fff', border: 'none' },
+    ghost:   { background: 'transparent', color: colors.primary, border: `1.5px solid ${colors.primary}` },
+    warning: { background: colors.alert200, color: colors.black, border: 'none' },
+    extra:   { background: '#983dc3', color: '#fff', border: 'none' },
+  };
+  return <button style={{ ...s[variant], borderRadius: 8, padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'default', fontFamily: typography.fontBody }}>{label}</button>;
+}
+
+function ColourGuidelines() {
+  return (
+    <div style={{ fontFamily: typography.fontBody, paddingBottom: 48 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: colors.g400, marginBottom: 12 }}>Colour roles</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 40 }}>
+        {[
+          { swatch: '#f7f7f8', label: 'Background', desc: 'Page and surface backgrounds.' },
+          { swatch: '#18171c', label: 'Text', desc: 'Primary and secondary text.' },
+          { swatch: colors.primary, label: 'Interactive', desc: 'Buttons, links, focus rings.' },
+          { swatch: '#e3f7f2', label: 'Support', desc: 'Hover states, confirmations.' },
+          { swatch: colors.error300, label: 'Danger', desc: 'Destructive actions, errors.' },
+          { swatch: colors.success300, label: 'Success', desc: 'Completed, confirmed states.' },
+          { swatch: colors.alert200, label: 'Warning', desc: 'Warnings, pending states.' },
+          { swatch: 'linear-gradient(135deg,#f54966,#983dc3,#3c83ee)', label: 'Extra', desc: 'Charts, tags, decorative.' },
+        ].map(({ swatch, label, desc }) => (
+          <div key={label} style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ height: 48, borderRadius: 8, border: '1px solid rgba(0,0,0,.06)', background: swatch }} />
+            <div style={{ fontSize: 12, fontWeight: 700 }}>{label}</div>
+            <div style={{ fontSize: 11, color: colors.g500, lineHeight: 1.5 }}>{desc}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: colors.g400, marginBottom: 12 }}>Interactive elements</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
+        <DoCard note="Primary (#413cc3) for CTAs">
+          <div style={{ display: 'flex', gap: 10 }}><Btn label="Primary" /><Btn label="Secondary" variant="ghost" /></div>
+        </DoCard>
+        <DontCard note="Don't use Alert/Extra colours for interactive elements">
+          <div style={{ display: 'flex', gap: 10 }}><Btn label="Primary" variant="warning" /><Btn label="Secondary" variant="extra" /></div>
+        </DontCard>
+      </div>
+
+      <div style={{ background: '#f0f0ff', borderLeft: `3px solid ${colors.primary}`, borderRadius: '0 8px 8px 0', padding: '14px 18px', fontSize: 13, color: '#333', lineHeight: 1.7 }}>
+        <strong>AA</strong> = 4.5:1 · <strong>AAA</strong> = 7:1 · Large text (18px+ bold) = 3:1 · All text must meet WCAG 2.1 AA minimum.
+      </div>
+    </div>
+  );
+}
+
+function SpacingGuidelines() {
+  return (
+    <div style={{ fontFamily: typography.fontBody, paddingBottom: 48 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 32 }}>
+        {[
+          { icon: '⚡', title: 'Efficiency first', desc: "Dense layouts are a feature. Don't pad for aesthetics." },
+          { icon: '📐', title: '4px base unit', desc: 'All spacing values are multiples of 4px.' },
+          { icon: '🧱', title: 'Consistent rhythm', desc: 'Same token for same role everywhere.' },
+        ].map(({ icon, title, desc }) => (
+          <div key={title} style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 12, padding: 18 }}>
+            <div style={{ fontSize: 20, marginBottom: 8 }}>{icon}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 4 }}>{title}</div>
+            <div style={{ fontSize: 13, color: colors.g500, lineHeight: 1.6 }}>{desc}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: colors.g400, marginBottom: 12 }}>Usage reference</div>
+      <div style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 14, overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: colors.g100, borderBottom: `1px solid ${colors.g200}` }}>
+              {['Token', 'Value', 'Use'].map(h => <th key={h} style={{ padding: '10px 14px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, color: colors.g400, textAlign: 'left' }}>{h}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { token: 'space-2',  val: '2px',  use: 'Icon-to-text gap' },
+              { token: 'space-4',  val: '4px',  use: 'Inline gap' },
+              { token: 'space-8',  val: '8px',  use: 'Button padding (v), checkbox gap' },
+              { token: 'space-12', val: '12px', use: 'Input padding (h)' },
+              { token: 'space-16', val: '16px', use: 'Card padding' },
+              { token: 'space-24', val: '24px', use: 'Card section gap' },
+              { token: 'space-32', val: '32px', use: 'Page sections' },
+              { token: 'space-40', val: '40px', use: 'Page rhythm' },
+            ].map(({ token, val, use }) => (
+              <tr key={token} style={{ borderBottom: `1px solid ${colors.g150}` }}>
+                <td style={{ padding: '12px 14px', fontSize: 12, fontFamily: 'monospace', fontWeight: 600 }}>{token}</td>
+                <td style={{ padding: '12px 14px', fontSize: 12, fontFamily: 'monospace', color: colors.g500 }}>{val}</td>
+                <td style={{ padding: '12px 14px', fontSize: 12, color: colors.g500 }}>{use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function TypographyGuidelines() {
+  return (
+    <div style={{ fontFamily: typography.fontBody, paddingBottom: 48 }}>
+      <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: colors.g400, marginBottom: 12 }}>Hierarchy</div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>
+        <DoCard note="Each level visually distinct — clear hierarchy">
+          <div style={{ fontFamily: typography.fontDisplay, fontSize: 24, fontWeight: 700, color: colors.black }}>Page title</div>
+          <div style={{ fontFamily: typography.fontDisplay, fontSize: 16, fontWeight: 600, marginTop: 6 }}>Heading</div>
+          <div style={{ fontFamily: typography.fontBody, fontSize: 14, color: colors.g600, marginTop: 4, lineHeight: 1.6 }}>Body text at a readable size with clear contrast from the heading above.</div>
+        </DoCard>
+        <DontCard note="Sizes too similar — no visual hierarchy">
+          <div style={{ fontFamily: typography.fontBody, fontSize: 15, color: colors.black }}>Page title</div>
+          <div style={{ fontFamily: typography.fontBody, fontSize: 14, marginTop: 6 }}>Heading</div>
+          <div style={{ fontFamily: typography.fontBody, fontSize: 13, marginTop: 4, lineHeight: 1.6 }}>Body text the same size as everything else.</div>
+        </DontCard>
+      </div>
+      <div style={{ background: '#f0f0ff', borderLeft: `3px solid ${colors.primary}`, borderRadius: '0 8px 8px 0', padding: '14px 18px', fontSize: 13, color: '#333', lineHeight: 1.7 }}>
+        Use <strong>Aeonik</strong> (font-display) for H1–H4 only. Use <strong>Public Sans</strong> (font-sans) for all body, UI, labels, and captions.
+      </div>
+    </div>
+  );
+}
+
+export const ColourGuide: StoryObj = {
+  name: 'Colour guidelines',
+  render: () => <ColourGuidelines />,
+};
+
+export const SpacingGuide: StoryObj = {
+  name: 'Spacing guidelines',
+  render: () => <SpacingGuidelines />,
+};
+
+export const TypographyGuide: StoryObj = {
+  name: 'Typography guidelines',
+  render: () => <TypographyGuidelines />,
+};

@@ -1,7 +1,50 @@
+// ============================================================
+// Checkbox stories — Miles Design System
+// ============================================================
+
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Checkbox } from './Checkbox';
 import { colors, typography } from '../../tokens/tokens';
+
+const F = { body: typography.fontBody };
+const C = colors;
+
+function DoCard({ children, note }: { children: React.ReactNode; note?: string }) {
+  return (
+    <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ padding: '8px 14px', background: '#f0fdf4', borderBottom: '1px solid #bbf7d0', display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#16a34a', fontFamily: F.body }}>
+        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#16a34a', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: '#fff' }}>✓</span>
+        Do
+      </div>
+      <div style={{ padding: 20 }}>{children}</div>
+      {note && <div style={{ padding: '8px 14px', fontSize: 11, color: C.g500, borderTop: `1px solid ${C.g150}`, fontFamily: F.body }}>{note}</div>}
+    </div>
+  );
+}
+
+function DontCard({ children, note }: { children: React.ReactNode; note?: string }) {
+  return (
+    <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ padding: '8px 14px', background: '#fff1f2', borderBottom: '1px solid #fecdd3', display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 700, color: '#dc2626', fontFamily: F.body }}>
+        <span style={{ width: 14, height: 14, borderRadius: '50%', background: '#dc2626', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: '#fff' }}>✕</span>
+        {"Don't"}
+      </div>
+      <div style={{ padding: 20 }}>{children}</div>
+      {note && <div style={{ padding: '8px 14px', fontSize: 11, color: C.g500, borderTop: `1px solid ${C.g150}`, fontFamily: F.body }}>{note}</div>}
+    </div>
+  );
+}
+
+const Grid2 = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 32 }}>{children}</div>
+);
+
+const Label = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ fontFamily: F.body, fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: C.g400, marginBottom: 12, marginTop: 32 }}>{children}</div>
+);
+
+const Divider = () => <hr style={{ border: 'none', borderTop: `1px solid ${C.g200}`, margin: '40px 0' }} />;
 
 const meta = {
   title: 'Components/Checkbox',
@@ -11,22 +54,17 @@ const meta = {
     layout: 'padded',
     docs: {
       description: {
-        component:
-          'Checkboxes allow users to select zero, one, or multiple items from a list. Each checkbox works independently. Use radio buttons when only one selection is allowed; use a toggle when the action is immediate.',
+        component: 'Checkboxes allow users to select zero, one, or multiple items from a list. Each checkbox works independently. Use **radio buttons** when only one selection is allowed. Use a **toggle** when the action takes effect immediately without a form submission.',
       },
     },
   },
   argTypes: {
-    size: {
-      control: 'radio',
-      options: ['S', 'M', 'L'],
-      description: 'S = 16px · M = 20px · L = 24px',
-    },
-    checked: { control: 'boolean' },
-    indeterminate: { control: 'boolean' },
-    disabled: { control: 'boolean' },
-    label: { control: 'text' },
-    showInfoIcon: { control: 'boolean' },
+    size: { control: 'radio', options: ['S', 'M', 'L'], description: 'S = 16px · M = 20px · L = 24px', table: { defaultValue: { summary: 'M' } } },
+    checked: { control: 'boolean', table: { defaultValue: { summary: 'false' } } },
+    indeterminate: { control: 'boolean', description: 'Some but not all children selected', table: { defaultValue: { summary: 'false' } } },
+    disabled: { control: 'boolean', table: { defaultValue: { summary: 'false' } } },
+    label: { control: 'text', description: 'Label text — leave empty to show checkbox only' },
+    showInfoIcon: { control: 'boolean', description: 'Show the info icon to the right of the label', table: { defaultValue: { summary: 'false' } } },
     onChange: { action: 'changed' },
   },
   args: {
@@ -42,110 +80,125 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// ─── Playground ──────────────────────────────────────────────────────────────
+// ─── Playground ───────────────────────────────────────────────────────────────
 
-export const Playground: Story = {};
-
-// ─── States ──────────────────────────────────────────────────────────────────
-
-export const Unselected: Story = {
-  args: { checked: false, label: 'Unselected' },
-};
-
-export const Selected: Story = {
-  args: { checked: true, label: 'Selected' },
-};
-
-export const Indeterminate: Story = {
-  args: { indeterminate: true, label: 'Indeterminate — some children selected' },
-};
-
-export const Disabled: Story = {
-  args: { disabled: true, label: 'Disabled — not interactive' },
-};
-
-export const DisabledChecked: Story = {
-  name: 'Disabled (checked)',
-  args: { disabled: true, checked: true, label: 'Disabled checked' },
-};
-
-export const WithInfoIcon: Story = {
-  name: 'With info icon',
-  args: { showInfoIcon: true, label: 'With info icon' },
-};
-
-// ─── All sizes ────────────────────────────────────────────────────────────────
-
-export const AllSizes: Story = {
-  name: 'Sizes — S / M / L',
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {(['S', 'M', 'L'] as const).map(size => (
-        <Checkbox key={size} size={size} checked label={`Size ${size}`} />
-      ))}
-    </div>
-  ),
-};
-
-// ─── All states ───────────────────────────────────────────────────────────────
-
-export const AllStates: Story = {
-  name: 'All states',
-  parameters: { controls: { disable: true } },
-  render: () => {
-    const rows: { label: string; props: React.ComponentProps<typeof Checkbox> }[] = [
-      { label: 'Unselected — default',     props: { checked: false } },
-      { label: 'Selected — default',       props: { checked: true } },
-      { label: 'Indeterminate — default',  props: { indeterminate: true } },
-      { label: 'Disabled unselected',      props: { disabled: true, checked: false } },
-      { label: 'Disabled selected',        props: { disabled: true, checked: true } },
-    ];
+export const Playground: Story = {
+  name: 'Playground',
+  parameters: {
+    docs: { description: { story: 'All controls live. Check the box, change size, toggle info icon. The code snippet below updates in real time.' } },
+  },
+  render: (args) => {
+    const [checked, setChecked] = React.useState(args.checked ?? false);
+    React.useEffect(() => { setChecked(args.checked ?? false); }, [args.checked]);
+    const snippet = `<Checkbox size="${args.size}"${checked ? ' checked' : ''}${args.indeterminate ? ' indeterminate' : ''}${args.disabled ? ' disabled' : ''}${args.label ? ` label="${args.label}"` : ''}${args.showInfoIcon ? ' showInfoIcon' : ''} />`;
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-        {rows.map(({ label, props }) => (
-          <Checkbox key={label} {...props} label={label} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <Checkbox {...args} checked={checked} onChange={setChecked} />
+        <code style={{ fontFamily: 'monospace', fontSize: 12, color: C.g600, background: C.g100, padding: '8px 12px', borderRadius: 8, display: 'block' }}>
+          {snippet}
+        </code>
+      </div>
+    );
+  },
+};
+
+// ─── States ───────────────────────────────────────────────────────────────────
+
+export const States: Story = {
+  name: 'States',
+  parameters: {
+    controls: { disable: true },
+    docs: { description: { story: 'Every state the checkbox can be in. Click any enabled checkbox to toggle it.' } },
+  },
+  render: () => {
+    const [vals, setVals] = React.useState({ a: false, b: true });
+    return (
+      <div style={{ fontFamily: F.body, background: C.white, border: `1px solid ${C.g200}`, borderRadius: 14, overflow: 'hidden' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: C.g100, borderBottom: `1px solid ${C.g200}` }}>
+              {['State', 'Preview', 'Description'].map(h => (
+                <th key={h} style={{ padding: '10px 20px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: C.g400, textAlign: 'left' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              { state: 'Unselected', el: <Checkbox checked={vals.a} label="Click to select" onChange={() => setVals(v => ({ ...v, a: !v.a }))} />, desc: 'Default. Nothing selected.' },
+              { state: 'Selected', el: <Checkbox checked={vals.b} label="Click to deselect" onChange={() => setVals(v => ({ ...v, b: !v.b }))} />, desc: 'Primary fill, white checkmark. Label colour: G600.' },
+              { state: 'Indeterminate', el: <Checkbox indeterminate label="Some children selected" />, desc: 'Some but not all children selected. Shows a dash.' },
+              { state: 'Hover', el: <Checkbox checked={false} label="Hover over me" />, desc: 'Primary border + P100 background. Label → Black.' },
+              { state: 'Focused', el: (
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
+                  <div style={{ width: 20, height: 20, borderRadius: 4, border: `1.5px solid ${C.primary}`, background: '#f0f0ff', boxShadow: '0 0 0 3px rgba(65,60,195,.2)', flexShrink: 0, boxSizing: 'border-box' as const }} />
+                  <span style={{ fontSize: 14, color: C.black, fontFamily: F.body }}>Keyboard focused</span>
+                </label>
+              ), desc: '3px focus ring at 20% opacity for keyboard accessibility.' },
+              { state: 'Disabled', el: <Checkbox disabled label="Not available" />, desc: 'G200 border, G100 fill. Not interactive.' },
+              { state: 'Disabled (checked)', el: <Checkbox disabled checked label="Locked on" />, desc: 'G300 fill, white checkmark, G400 label.' },
+            ].map(({ state, el, desc }) => (
+              <tr key={state} style={{ borderBottom: `1px solid ${C.g150}` }}>
+                <td style={{ padding: '16px 20px', fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap' as const }}>{state}</td>
+                <td style={{ padding: '16px 20px' }}>{el}</td>
+                <td style={{ padding: '16px 20px', fontSize: 13, color: C.g500 }}>{desc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  },
+};
+
+// ─── Sizes ────────────────────────────────────────────────────────────────────
+
+export const Sizes: Story = {
+  name: 'Sizes',
+  parameters: {
+    controls: { disable: true },
+    docs: { description: { story: 'Three sizes — S (16px), M (20px), L (24px). Click any to toggle.' } },
+  },
+  render: () => {
+    const [checked, setChecked] = React.useState({ S: true, M: true, L: false });
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {(['S', 'M', 'L'] as const).map(size => (
+          <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            <code style={{ width: 24, fontSize: 11, color: C.g400, fontFamily: 'monospace' }}>{size}</code>
+            <Checkbox
+              size={size}
+              checked={checked[size]}
+              label={`Size ${size} — ${size === 'S' ? '16px · Caption' : size === 'M' ? '20px · Small' : '24px · Body'}`}
+              showInfoIcon
+              onChange={v => setChecked(c => ({ ...c, [size]: v }))}
+            />
+          </div>
         ))}
       </div>
     );
   },
 };
 
-// ─── Group / nesting example ──────────────────────────────────────────────────
+// ─── Nesting ──────────────────────────────────────────────────────────────────
 
-export const NestedGroup: Story = {
-  name: 'Nested group',
-  parameters: { controls: { disable: true } },
+export const Nesting: Story = {
+  name: 'Nesting',
+  parameters: {
+    controls: { disable: true },
+    docs: { description: { story: 'Parent shows **indeterminate** when only some children are checked. Clicking the parent selects or deselects all children.' } },
+  },
   render: () => {
-    const [parent, setParent] = React.useState<boolean | 'indeterminate'>('indeterminate');
     const [children, setChildren] = React.useState([true, false, true]);
-
-    const toggle = (i: number) => {
-      const next = [...children];
-      next[i] = !next[i];
-      setChildren(next);
-      const all = next.every(Boolean);
-      const none = next.every(v => !v);
-      setParent(all ? true : none ? false : 'indeterminate');
-    };
-
-    const toggleAll = () => {
-      const next = parent !== true;
-      setChildren([next, next, next]);
-      setParent(next);
-    };
-
+    const allChecked = children.every(Boolean);
+    const indeterminate = children.some(Boolean) && !allChecked;
+    const toggleAll = () => { const n = !allChecked; setChildren([n, n, n]); };
+    const toggleChild = (i: number) => { const n = [...children]; n[i] = !n[i]; setChildren(n); };
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <Checkbox
-          checked={parent === true}
-          indeterminate={parent === 'indeterminate'}
-          label="Notification preferences"
-          onChange={toggleAll}
-        />
+        <Checkbox checked={allChecked} indeterminate={indeterminate} label="Notification preferences" onChange={toggleAll} />
         <div style={{ paddingLeft: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {['Email', 'Push', 'SMS'].map((name, i) => (
-            <Checkbox key={name} checked={children[i]} label={name} onChange={() => toggle(i)} />
+          {['Email', 'Push notifications', 'SMS'].map((name, i) => (
+            <Checkbox key={name} checked={children[i]} label={name} onChange={() => toggleChild(i)} />
           ))}
         </div>
       </div>
@@ -153,27 +206,127 @@ export const NestedGroup: Story = {
   },
 };
 
-// ─── Form example ─────────────────────────────────────────────────────────────
+// ─── Usage ────────────────────────────────────────────────────────────────────
 
-export const FormExample: Story = {
-  name: 'Form example',
-  parameters: { controls: { disable: true } },
+export const Usage: Story = {
+  name: 'Usage',
+  parameters: {
+    controls: { disable: true },
+    docs: { description: { story: 'When to use checkboxes, how to write labels, and layout best practices.' } },
+  },
+  render: () => (
+    <div style={{ fontFamily: F.body, paddingBottom: 48 }}>
+      <Label>When to use</Label>
+      <Grid2>
+        <DoCard note="Multiple independent selections">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Checkbox checked label="Email notifications" />
+            <Checkbox checked={false} label="Push notifications" />
+            <Checkbox checked label="SMS" />
+          </div>
+        </DoCard>
+        <DontCard note="Mutually exclusive → use radio buttons">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Checkbox checked label="Small" />
+            <Checkbox checked label="Large" />
+          </div>
+        </DontCard>
+      </Grid2>
+
+      <Label>Labels</Label>
+      <Grid2>
+        <DoCard note="Short, positive, sentence-case">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <Checkbox checked={false} label="Send weekly digest" />
+            <Checkbox checked={false} label="Allow team invitations" />
+          </div>
+        </DoCard>
+        <DontCard note="Avoid double negatives and vague text">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <Checkbox checked={false} label="Don't send me emails" />
+            <Checkbox checked={false} label="Option 1" />
+          </div>
+        </DontCard>
+      </Grid2>
+
+      <Label>Layout</Label>
+      <Grid2>
+        <DoCard note="Vertical stacking — easier to scan">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Checkbox checked label="Email" />
+            <Checkbox checked={false} label="Push" />
+            <Checkbox checked label="SMS" />
+          </div>
+        </DoCard>
+        <DontCard note="Horizontal is hard to scan">
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 20 }}>
+            <Checkbox checked label="Email" />
+            <Checkbox checked={false} label="Push" />
+            <Checkbox checked label="SMS" />
+          </div>
+        </DontCard>
+      </Grid2>
+
+      <Divider />
+
+      <Label>When not to use</Label>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+        {[
+          { title: 'Radio button', desc: 'Only one option can be selected.' },
+          { title: 'Toggle switch', desc: 'Action applies immediately, no submission needed.' },
+          { title: 'Data table', desc: 'Use checkboxes inside tables for batch selection.' },
+        ].map(({ title, desc }) => (
+          <div key={title} style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, padding: 18 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 6 }}>{title}</div>
+            <div style={{ fontSize: 13, color: C.g500, lineHeight: 1.6 }}>{desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+};
+
+// ─── Examples ─────────────────────────────────────────────────────────────────
+
+export const Examples: Story = {
+  name: 'Examples',
+  parameters: {
+    controls: { disable: true },
+    docs: { description: { story: 'Real-world patterns — fully interactive.' } },
+  },
   render: () => {
-    const [vals, setVals] = React.useState({ digest: false, invites: true, terms: false });
-    const toggle = (k: keyof typeof vals) => setVals(v => ({ ...v, [k]: !v[k] }));
+    const [prefs, setPrefs] = React.useState({ digest: false, invites: true, terms: false });
+    const toggle = (k: keyof typeof prefs) => setPrefs(v => ({ ...v, [k]: !v[k] }));
+    const [notifs, setNotifs] = React.useState([true, false, true]);
+    const allNotifs = notifs.every(Boolean);
+    const someNotifs = notifs.some(Boolean) && !allNotifs;
+    const toggleAllNotifs = () => { const n = !allNotifs; setNotifs([n, n, n]); };
+    const toggleNotif = (i: number) => { const n = [...notifs]; n[i] = !n[i]; setNotifs(n); };
     return (
-      <div style={{ background: colors.white, border: `1px solid ${colors.g200}`, borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 340 }}>
-        <div style={{ fontSize: 14, fontWeight: 700, fontFamily: typography.fontBody, color: colors.black, marginBottom: 4 }}>
-          Communication preferences
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: C.g400, marginBottom: 12, fontFamily: F.body }}>Form with submission</div>
+          <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ fontSize: 14, fontWeight: 700, fontFamily: F.body }}>Communication preferences</div>
+            <Checkbox checked={prefs.digest} label="Send weekly digest" onChange={() => toggle('digest')} />
+            <Checkbox checked={prefs.invites} label="Allow team invitations" onChange={() => toggle('invites')} />
+            <Checkbox checked={prefs.terms} label="I agree to the terms of use" onChange={() => toggle('terms')} />
+            <button style={{ background: C.primary, color: C.white, border: 'none', borderRadius: 8, padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', alignSelf: 'flex-start', fontFamily: F.body }}>
+              Save preferences
+            </button>
+          </div>
         </div>
-        <Checkbox checked={vals.digest}  label="Send me the weekly digest"    onChange={() => toggle('digest')} />
-        <Checkbox checked={vals.invites} label="Allow team invitations"       onChange={() => toggle('invites')} />
-        <Checkbox checked={vals.terms}   label="I agree to the terms of use"  onChange={() => toggle('terms')} />
-        <button
-          style={{ marginTop: 4, background: colors.primary, color: colors.white, border: 'none', borderRadius: 8, padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', alignSelf: 'flex-start' }}
-        >
-          Save preferences
-        </button>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: C.g400, marginBottom: 12, fontFamily: F.body }}>Nested group</div>
+          <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Checkbox checked={allNotifs} indeterminate={someNotifs} label="Notification preferences" onChange={toggleAllNotifs} />
+            <div style={{ paddingLeft: 28, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {['Email', 'Push', 'SMS'].map((name, i) => (
+                <Checkbox key={name} checked={notifs[i]} label={name} onChange={() => toggleNotif(i)} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   },
