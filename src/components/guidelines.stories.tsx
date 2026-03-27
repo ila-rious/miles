@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { colors, typography } from '../tokens/tokens';
+import { colors, typography, textStyles } from '../tokens/tokens';
 
 // ─── Shared primitives ────────────────────────────────────────────────────────
 
@@ -265,33 +265,60 @@ function TypographyGuidelines() {
       <Divider />
 
       <SubLabel>Type scale reference</SubLabel>
-      <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 14, overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#fafafa', borderBottom: `1px solid ${C.g200}` }}>
-              {['Style', 'Size / Weight', 'Font', 'Preview'].map(h => (
-                <th key={h} style={{ padding: '10px 14px', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: C.g400, textAlign: 'left' }}>{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              { style: 'Display', spec: '32px / 800', font: 'Aeonik', preview: <span style={{ fontFamily: T.display, fontSize: 28, fontWeight: 800, letterSpacing: '-0.03em' }}>Trumpet</span> },
-              { style: 'Heading 1', spec: '24px / 700', font: 'Aeonik', preview: <span style={{ fontFamily: T.display, fontSize: 20, fontWeight: 700 }}>Heading one</span> },
-              { style: 'Body', spec: '16px / 400', font: 'Public Sans', preview: <span style={{ fontFamily: T.body, fontSize: 15 }}>The quick brown fox jumps over the lazy dog</span> },
-              { style: 'Small', spec: '14px / 400', font: 'Public Sans', preview: <span style={{ fontFamily: T.body, fontSize: 13 }}>The quick brown fox jumps over the lazy dog</span> },
-              { style: 'Caption', spec: '12px / 400', font: 'Public Sans', preview: <span style={{ fontFamily: T.body, fontSize: 12, color: C.g500 }}>Supporting text</span> },
-            ].map(({ style, spec, font, preview }) => (
-              <tr key={style} style={{ borderBottom: `1px solid ${C.g150}` }}>
-                <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>{style}</td>
-                <td style={{ padding: '12px 14px', fontSize: 12, color: C.g500, fontFamily: 'monospace' }}>{spec}</td>
-                <td style={{ padding: '12px 14px', fontSize: 12, color: C.g500 }}>{font}</td>
-                <td style={{ padding: '12px 14px' }}>{preview}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {[
+        {
+          group: 'Headers', rows: [
+            { token: 'h1', label: 'H1', spec: '48px / Semibold', font: 'Aeonik' },
+            { token: 'h2', label: 'H2', spec: '36px / Semibold', font: 'Aeonik' },
+            { token: 'h3', label: 'H3', spec: '24px / Semibold', font: 'Aeonik' },
+            { token: 'h4', label: 'H4', spec: '18px / Semibold', font: 'Aeonik' },
+          ]
+        },
+        {
+          group: 'Body', rows: [
+            { token: 'body',       label: 'Body',        spec: '16px / Regular',  font: 'Public Sans' },
+            { token: 'bodyMedium', label: 'Body Medium', spec: '16px / Medium',   font: 'Public Sans' },
+            { token: 'bodySemi',   label: 'Body Semi',   spec: '16px / Semibold', font: 'Public Sans' },
+          ]
+        },
+        {
+          group: 'Small', rows: [
+            { token: 'small',       label: 'Small',           spec: '14px / Regular',            font: 'Public Sans' },
+            { token: 'smallSemi',   label: 'Small Semi',      spec: '14px / Semibold',           font: 'Public Sans' },
+            { token: 'smallSemiUp', label: 'Small Semi Up',   spec: '14px / Semibold Uppercase', font: 'Public Sans' },
+          ]
+        },
+        {
+          group: 'Extras', rows: [
+            { token: 'caption',      label: 'Caption',       spec: '12px / Regular',            font: 'Public Sans' },
+            { token: 'captionSemi',  label: 'Caption Semi',  spec: '12px / Semibold',           font: 'Public Sans' },
+            { token: 'overline',     label: 'Overline',      spec: '12px / Regular Uppercase',  font: 'Public Sans' },
+            { token: 'overlineSemi', label: 'Overline Semi', spec: '12px / Semibold Uppercase', font: 'Public Sans' },
+          ]
+        },
+      ].map(({ group, rows }) => (
+        <div key={group} style={{ marginBottom: 24 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase' as const, letterSpacing: '0.08em', color: C.g400, marginBottom: 8 }}>{group}</div>
+          <div style={{ background: C.white, border: `1px solid ${C.g200}`, borderRadius: 12, overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <tbody>
+                {rows.map(({ token, label, spec, font }) => (
+                  <tr key={token} style={{ borderBottom: `1px solid ${C.g150}` }}>
+                    <td style={{ padding: '12px 14px', fontSize: 13, fontWeight: 600, fontFamily: 'monospace', width: 140 }}>{label}</td>
+                    <td style={{ padding: '12px 14px', fontSize: 12, color: C.g500, fontFamily: 'monospace', width: 180 }}>{spec}</td>
+                    <td style={{ padding: '12px 14px', fontSize: 12, color: C.g500, width: 100 }}>{font}</td>
+                    <td style={{ padding: '12px 14px' }}>
+                      <span style={textStyles[token as keyof typeof textStyles]}>
+                        {token.includes('Up') || token.includes('overline') ? 'SAMPLE TEXT' : 'Sample text'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
