@@ -49,7 +49,7 @@ const Divider = () => <hr style={{ border: 'none', borderTop: `1px solid ${C.g20
 const meta = {
   title: 'Components/Toggle',
   component: Toggle,
-  tags: [],
+  tags: ['!autodocs'],
   parameters: {
     layout: 'padded',
     docs: {

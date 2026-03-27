@@ -81,7 +81,7 @@ const LockIcon = () => (
 const meta = {
   title: 'Components/Input',
   component: Input,
-  tags: [],
+  tags: ['!autodocs'],
   parameters: {
     layout: 'padded',
     docs: {
