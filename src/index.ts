@@ -14,5 +14,9 @@ export type { CheckboxProps, CheckboxView, CheckboxSize, CheckboxState } from '.
 export { Toggle } from './components/Toggle';
 export type { ToggleProps, ToggleSize, ToggleColor, ToggleLabelAlign } from './components/Toggle';
 
+// Input
+export { Input } from './components/Input';
+export type { InputProps, InputSize, InputState, InputType } from './components/Input';
+
 // Coming soon:
 // export { Input } from './components/Input';
