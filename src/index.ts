@@ -20,3 +20,11 @@ export type { InputProps, InputSize, InputState, InputType } from './components/
 
 // Coming soon:
 // export { Input } from './components/Input';
+
+// InlineNotification
+export { InlineNotification } from './components/InlineNotification';
+export type { InlineNotificationProps, NotificationState, NotificationActions, NotificationAction } from './components/InlineNotification';
+
+// Button
+export { Button } from './components/Button';
+export type { ButtonProps, ButtonVariant, ButtonSize, ButtonMode } from './components/Button';

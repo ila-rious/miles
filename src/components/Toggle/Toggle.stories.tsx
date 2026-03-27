@@ -6,7 +6,7 @@ import { DoCard, DontCard, Grid2, SLabel, Divider, L, S, PC, C } from '../storyS
 const meta = {
   title: 'Components/Toggle',
   component: Toggle,
-  tags: ['!autodocs'],
+  tags: ['autodocs'],
   parameters: { layout: 'padded' },
   argTypes: {
     size:       { control: 'radio',  options: ['S','M','L'] },

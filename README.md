@@ -1,5 +1,5 @@
 # 🎺 Miles
- 
+
 **Trumpet Design System — React component library**
 
 Miles is the coded counterpart to Trumpet's Figma design system. Every component is built directly from Figma tokens, keeping design and code always in sync.

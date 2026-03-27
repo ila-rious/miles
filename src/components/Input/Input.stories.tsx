@@ -11,7 +11,7 @@ const LockIcon = () => <svg width="14" height="14" viewBox="0 0 14 14" fill="non
 const meta = {
   title: 'Components/Input',
   component: Input,
-  tags: ['!autodocs'],
+  tags: ['autodocs'],
   parameters: { layout: 'padded' },
   argTypes: {
     view:            { control: 'radio',  options: ['input','search','textarea'] },
