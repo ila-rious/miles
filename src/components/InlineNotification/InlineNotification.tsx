@@ -121,7 +121,7 @@ export const InlineNotification: React.FC<InlineNotificationProps> = ({
           <Button
             key={i}
             size="S"
-            variant={isPrimary ? 'primary' : 'outline'}
+            variant={isPrimary ? 'primary' : 'secondary'}
             onClick={btn.onClick}
           >
             {btn.label}

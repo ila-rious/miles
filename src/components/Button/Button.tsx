@@ -6,7 +6,7 @@
 import React from 'react';
 import { colors, textStyles } from '../../tokens/tokens';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 export type ButtonSize    = 'L' | 'M' | 'S' | 'XS' | 'XXS';
 export type ButtonMode    = 'light' | 'dark';
 
@@ -62,60 +62,58 @@ const SIZES: Record<ButtonSize, {
 // ─── Variant tokens — from Figma state specs ─────────────────────────────────
 
 type VariantTokens = {
-  bg:          string;
-  bgHover:     string;
-  bgDisabled:  string;
-  color:       string;
-  colorDisabled: string;
-  border?:     string;
-  borderHover?: string;
+  bg:             string;
+  bgHover:        string;
+  bgDisabled:     string;
+  color:          string;
+  colorHover?:    string;
+  colorDisabled:  string;
+  border?:        string;
+  borderHover?:   string;
   borderDisabled?: string;
-  focusRing:   string;
+  focusRing:      string;
 };
 
 const VARIANTS: Record<ButtonVariant, VariantTokens> = {
   primary: {
-    bg:             colors.primary,          // #413cc3
-    bgHover:        '#2f2aa2',
-    bgDisabled:     colors.g200,
-    color:          colors.white,
-    colorDisabled:  colors.g400,
-    focusRing:      'rgba(65,60,195,0.3)',
+    bg:            colors.primary,   // #413cc3
+    bgHover:       '#2f2aa2',
+    bgDisabled:    colors.g200,
+    color:         colors.white,
+    colorDisabled: colors.g400,
+    focusRing:     'rgba(65,60,195,0.3)',
   },
+  // Secondary = bordered, transparent background — stays transparent on hover
   secondary: {
-    bg:             'rgba(245,73,102,1)',     // brand pink/red
-    bgHover:        'rgba(220,50,80,1)',
-    bgDisabled:     colors.g200,
-    color:          colors.white,
-    colorDisabled:  colors.g400,
-    focusRing:      'rgba(245,73,102,0.3)',
-  },
-  outline: {
     bg:             'transparent',
-    bgHover:        colors.white,
+    bgHover:        'transparent',
     bgDisabled:     'transparent',
     color:          colors.primary,
     colorDisabled:  colors.g400,
-    border:         '#cccaf6',               // P200
-    borderHover:    '#8682d9',               // P300
+    border:         '#cccaf6',        // P200
+    borderHover:    '#8682d9',        // P300 — border darkens on hover
     borderDisabled: colors.g200,
     focusRing:      'rgba(65,60,195,0.2)',
   },
+  // Ghost = no border, no background — stays transparent on hover
   ghost: {
-    bg:             'transparent',
-    bgHover:        colors.p100,             // #f2f2fd
-    bgDisabled:     'transparent',
-    color:          colors.primary,
-    colorDisabled:  colors.g400,
-    focusRing:      'rgba(65,60,195,0.2)',
+    bg:            'transparent',
+    bgHover:       'transparent',
+    bgDisabled:    'transparent',
+    color:         colors.primary,
+    colorHover:    '#2f2aa2',         // text darkens on hover
+    colorDisabled: colors.g400,
+    focusRing:     'rgba(65,60,195,0.2)',
   },
+  // Destructive = no background — stays transparent on hover
   destructive: {
-    bg:             'transparent',
-    bgHover:        colors.error100,         // #ffebeb
-    bgDisabled:     'transparent',
-    color:          colors.error300,         // #d60000
-    colorDisabled:  colors.g400,
-    focusRing:      'rgba(214,0,0,0.2)',
+    bg:            'transparent',
+    bgHover:       'transparent',
+    bgDisabled:    'transparent',
+    color:         colors.error300,   // #d60000
+    colorHover:    '#a80000',         // text darkens on hover
+    colorDisabled: colors.g400,
+    focusRing:     'rgba(214,0,0,0.2)',
   },
 };
 
@@ -168,6 +166,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const getColor = () => {
     if (isDisabled) return v.colorDisabled;
+    if ((hovered || focused) && v.colorHover) return v.colorHover;
     return v.color;
   };
 
