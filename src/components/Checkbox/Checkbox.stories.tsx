@@ -85,18 +85,115 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {
   name: 'Playground',
   parameters: {
-    docs: { description: { story: 'All controls live. Check the box, change size, toggle info icon. The code snippet below updates in real time.' } },
+    layout: 'fullscreen',
+    controls: { disable: true },
+    docs: { description: { story: 'Click the checkbox, tweak controls on the right. The code snippet updates live.' } },
   },
-  render: (args) => {
-    const [checked, setChecked] = React.useState(args.checked ?? false);
-    React.useEffect(() => { setChecked(args.checked ?? false); }, [args.checked]);
-    const snippet = `<Checkbox size="${args.size}"${checked ? ' checked' : ''}${args.indeterminate ? ' indeterminate' : ''}${args.disabled ? ' disabled' : ''}${args.label ? ` label="${args.label}"` : ''}${args.showInfoIcon ? ' showInfoIcon' : ''} />`;
+  render: () => {
+    const [checked, setChecked] = React.useState(false);
+    const [indeterminate, setIndeterminate] = React.useState(false);
+    const [size, setSize] = React.useState<'S' | 'M' | 'L'>('M');
+    const [disabled, setDisabled] = React.useState(false);
+    const [label, setLabel] = React.useState('Checkbox label');
+    const [showInfoIcon, setShowInfoIcon] = React.useState(false);
+
+    const snippet = `<Checkbox size="${size}"${checked ? ' checked' : ''}${indeterminate ? ' indeterminate' : ''}${disabled ? ' disabled' : ''}${label ? ` label="${label}"` : ''}${showInfoIcon ? ' showInfoIcon' : ''} />`;
+
+    const ctrlLabel: React.CSSProperties = { fontSize: 11, fontWeight: 700, color: C.g500, textTransform: 'uppercase', letterSpacing: '0.08em', fontFamily: F.body, marginBottom: 6, display: 'block' };
+    const ctrlRow: React.CSSProperties = { marginBottom: 20 };
+    const btnGroup: React.CSSProperties = { display: 'flex', gap: 4 };
+    const btn = (active: boolean): React.CSSProperties => ({
+      padding: '5px 12px', fontSize: 12, fontWeight: active ? 700 : 400, borderRadius: 6,
+      border: `1px solid ${active ? C.primary : C.g200}`,
+      background: active ? C.primary : C.white,
+      color: active ? C.white : C.g600,
+      cursor: 'pointer', fontFamily: F.body,
+    });
+    const toggle = (on: boolean, set: (v: boolean) => void): React.CSSProperties => ({
+      width: 36, height: 20, borderRadius: 32, padding: 2,
+      background: on ? C.primary : C.g200,
+      display: 'flex', alignItems: 'center', justifyContent: on ? 'flex-end' : 'flex-start',
+      cursor: 'pointer', flexShrink: 0, transition: 'background 0.2s',
+    });
+
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        <Checkbox {...args} checked={checked} onChange={setChecked} />
-        <code style={{ fontFamily: 'monospace', fontSize: 12, color: C.g600, background: C.g100, padding: '8px 12px', borderRadius: 8, display: 'block' }}>
-          {snippet}
-        </code>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', minHeight: '100vh', fontFamily: F.body }}>
+        {/* Left — component preview */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 32, background: C.g100, padding: 48 }}>
+          <Checkbox
+            size={size}
+            checked={checked}
+            indeterminate={indeterminate}
+            disabled={disabled}
+            label={label || undefined}
+            showInfoIcon={showInfoIcon}
+            onChange={setChecked}
+          />
+          <code style={{ fontFamily: 'monospace', fontSize: 12, color: C.g600, background: C.white, border: `1px solid ${C.g200}`, padding: '10px 14px', borderRadius: 8, maxWidth: 400, wordBreak: 'break-all' as const, lineHeight: 1.6 }}>
+            {snippet}
+          </code>
+        </div>
+
+        {/* Right — controls */}
+        <div style={{ background: C.white, borderLeft: `1px solid ${C.g200}`, padding: 24, overflowY: 'auto' as const }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: C.black, marginBottom: 24 }}>Controls</div>
+
+          <div style={ctrlRow}>
+            <span style={ctrlLabel}>Size</span>
+            <div style={btnGroup}>
+              {(['S', 'M', 'L'] as const).map(s => (
+                <button key={s} style={btn(size === s)} onClick={() => setSize(s)}>{s}</button>
+              ))}
+            </div>
+          </div>
+
+          <div style={ctrlRow}>
+            <span style={ctrlLabel}>State</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                { label: 'Checked', val: checked, set: (v: boolean) => { setChecked(v); if (v) setIndeterminate(false); } },
+                { label: 'Indeterminate', val: indeterminate, set: (v: boolean) => { setIndeterminate(v); if (v) setChecked(false); } },
+                { label: 'Disabled', val: disabled, set: setDisabled },
+              ].map(({ label: lbl, val, set }) => (
+                <div key={lbl} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 13, color: C.g600 }}>{lbl}</span>
+                  <div style={toggle(val, set)} onClick={() => set(!val)}>
+                    <div style={{ width: 16, height: 16, borderRadius: '50%', background: C.white }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={ctrlRow}>
+            <span style={ctrlLabel}>Label</span>
+            <input
+              value={label}
+              onChange={e => setLabel(e.target.value)}
+              style={{ width: '100%', border: `1.5px solid ${C.g200}`, borderRadius: 7, padding: '7px 10px', fontSize: 13, fontFamily: F.body, color: C.black, outline: 'none', boxSizing: 'border-box' as const }}
+              onFocus={e => e.target.style.borderColor = C.primary}
+              onBlur={e => e.target.style.borderColor = C.g200}
+            />
+          </div>
+
+          <div style={ctrlRow}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={ctrlLabel}>Info icon</span>
+              <div style={toggle(showInfoIcon, setShowInfoIcon)} onClick={() => setShowInfoIcon(v => !v)}>
+                <div style={{ width: 16, height: 16, borderRadius: '50%', background: C.white }} />
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: 8, paddingTop: 20, borderTop: `1px solid ${C.g150}` }}>
+            <button
+              onClick={() => { setChecked(false); setIndeterminate(false); setSize('M'); setDisabled(false); setLabel('Checkbox label'); setShowInfoIcon(false); }}
+              style={{ width: '100%', padding: '8px', fontSize: 12, fontWeight: 600, color: C.g500, background: 'transparent', border: `1px solid ${C.g200}`, borderRadius: 7, cursor: 'pointer', fontFamily: F.body }}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
     );
   },
