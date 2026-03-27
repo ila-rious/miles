@@ -122,7 +122,7 @@ export const Playground: Story = {
     return (
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', minHeight: '100vh', fontFamily: F.body }}>
         {/* Left — component preview */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 32, background: C.g100, padding: 48 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 32, background: C.g100, padding: "48px 48px 0" }}>
           <Toggle
             size={size}
             color={color}
